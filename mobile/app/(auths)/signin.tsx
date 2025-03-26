@@ -7,9 +7,11 @@ import { signinSchema } from "@/constants/schema";
 import { ThemedButton } from "@/components/common/ThemedButton";
 import { useRouter } from "expo-router";
 import AuthView from "@/components/AuthView";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Signin() {
   const router = useRouter();
+  const { authLoading, login } = useAuth();
   return (
     <AuthView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#061220" }}
@@ -30,7 +32,7 @@ export default function Signin() {
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={signinSchema}
-          onSubmit={(values) => alert("Signin coming soon")}
+          onSubmit={(values) => login(values)}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
             <ThemedView style={{ paddingVertical: 16 }}>

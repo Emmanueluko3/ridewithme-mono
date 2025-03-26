@@ -21,10 +21,18 @@ type User {
   email: String!
   name: String
   phone: String
+  role: UserType
   profile: Profile
   createdAt: DateTime!
   verifiedAt: DateTime
   updatedAt: DateTime!
+}
+
+"""user types"""
+enum UserType {
+  RIDER
+  DRIVER
+  ADMIN
 }
 
 type AuthResponse {
@@ -74,6 +82,7 @@ input LoginInput {
 input UpdateMeInput {
   name: String
   phone: String
+  userType: UserType
   profile: UpdateProfileInput
 }
 

@@ -16,7 +16,7 @@ export default function HomeScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#061220" }}
-      headerImage={<MapView style={styles.map} />}
+      // headerImage={<MapView style={styles.map} />}
     >
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title" style={styles.title}>

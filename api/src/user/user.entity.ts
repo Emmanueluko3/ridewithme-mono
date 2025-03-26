@@ -1,4 +1,10 @@
-import { Field, ObjectType, ID, GraphQLISODateTime } from '@nestjs/graphql';
+import {
+  Field,
+  ObjectType,
+  ID,
+  GraphQLISODateTime,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { Profile } from 'src/profile/profile.entity';
 
 @ObjectType()
@@ -15,6 +21,9 @@ export class User {
   @Field({ nullable: true })
   phone?: string;
 
+  @Field((type) => UserType, { nullable: true })
+  role?: UserType;
+
   @Field((type) => Profile, { nullable: true })
   profile?: Profile;
 
@@ -27,3 +36,13 @@ export class User {
   @Field(() => GraphQLISODateTime)
   updatedAt: string;
 }
+export enum UserType {
+  RIDER = 'RIDER',
+  DRIVER = 'DRIVER',
+  ADMIN = 'ADMIN',
+}
+
+registerEnumType(UserType, {
+  name: 'UserType',
+  description: 'user types',
+});
