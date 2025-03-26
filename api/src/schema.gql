@@ -1,0 +1,83 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Profile {
+  id: ID!
+  bio: String
+  location: String
+  user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: ID!
+  email: String!
+  name: String
+  phone: String
+  profile: Profile
+  createdAt: DateTime!
+  verifiedAt: DateTime
+  updatedAt: DateTime!
+}
+
+type AuthResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type BasicResponse {
+  status: String
+  message: String
+}
+
+type UserResponse {
+  status: String
+  message: String
+  user: User!
+}
+
+type Query {
+  users: [User!]!
+  user(id: Int!): User!
+  me: User!
+}
+
+type Mutation {
+  register(input: RegisterInput!): AuthResponse!
+  login(input: LoginInput!): AuthResponse!
+  logout: BasicResponse!
+  updateMe(input: UpdateMeInput!): UserResponse!
+}
+
+input RegisterInput {
+  email: String!
+  name: String
+  password: String!
+}
+
+input LoginInput {
+  """User Email"""
+  email: String!
+
+  """User Password"""
+  password: String!
+}
+
+input UpdateMeInput {
+  name: String
+  phone: String
+  profile: UpdateProfileInput
+}
+
+input UpdateProfileInput {
+  bio: String
+  location: String
+}

@@ -1,0 +1,20 @@
+model User {
+  id                 Int       @id @default(autoincrement())
+  email              String    @unique
+  name               String?
+  phone              String?
+  hashedPassword     String
+  hashedRefreshToken String?
+  isDisabled         Boolean   @default(false)
+  type               UserType  @default(RIDER)
+  profile            Profile?
+  verifiedAt         DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @default(now())
+}
+
+enum UserType {
+  RIDER
+  DRIVER
+  ADMIN
+}

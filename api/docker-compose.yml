@@ -1,0 +1,46 @@
+services:
+  ridewithme_api:
+    container_name: ridewithme_api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - 9001:9001
+    env_file:
+      - .env
+    networks:
+      - app_network
+    depends_on:
+      ridewithme_db:
+        condition: service_healthy
+  ridewithme_db:
+    image: mysql:8.0
+    container_name: ridewithme_db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=ridewithme_db
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=mysql
+      - MYSQL_RANDOM_ROOT_PASSWORD
+      - MYSQL_ALLOW_EMPTY_PASSWORD
+      - MYSQL_TCP_PORT=3306
+    ports:
+      - '3306:3306'
+    networks:
+      - app_network
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  app_network:
+    driver: bridge
