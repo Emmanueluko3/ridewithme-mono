@@ -1,139 +1,106 @@
-import { Image, StyleSheet, TextInput } from "react-native";
-import Checkbox from "expo-checkbox";
-import { useState } from "react";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
+import DefaultView from "@/components/DefaultView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { Formik } from "formik";
-import InputField from "@/components/common/Input";
-import { signinSchema } from "@/constants/schema";
 import { ThemedButton } from "@/components/common/ThemedButton";
+import { useAuth } from "@/context/AuthContext";
+import React from "react";
+import { StyleSheet, ImageBackground } from "react-native";
+import { Avatar, IconButton } from "react-native-paper";
 
-export default function HomeScreen() {
-  const [isChecked, setIsChecked] = useState(false);
+const AcountScreen = () => {
+  const { authLoading, logout } = useAuth();
+
+  const user = {
+    name: "John Doe",
+    phone: "+123 456 7890",
+    email: "johndoe@email.com",
+    profileImage: "https://randomuser.me/api/portraits/men/45.jpg",
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#061220" }}
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title" style={styles.title}>
-          Create an account
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Formik
-          initialValues={{ email: "", password: "" }}
-          validationSchema={signinSchema}
-          onSubmit={(values) => alert("Signup coming soon")}
-        >
-          {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-            <ThemedView style={{ paddingVertical: 16 }}>
-              <InputField
-                name="email"
-                label="Email"
-                onChangeText={handleChange("email")}
-                error={errors.email}
-                onBlur={handleBlur("email")}
-                placeholder="Enter your email"
-                value={values.email}
-              />
+    <DefaultView>
+      {/* Top Header Background */}
+      <ImageBackground
+        source={{ uri: "https://source.unsplash.com/random/800x600?city" }}
+        style={styles.header}
+      >
+        <ThemedView style={styles.avatarContainer}>
+          <Avatar.Image source={{ uri: user.profileImage }} size={80} />
+          <IconButton
+            icon="pencil"
+            size={16}
+            onPress={() => console.log("Edit Profile")}
+            style={styles.editIcon}
+          />
+        </ThemedView>
+      </ImageBackground>
 
-              <InputField
-                name="password"
-                label="Password"
-                onChangeText={handleChange("password")}
-                error={errors.password}
-                onBlur={handleBlur("password")}
-                placeholder="Enter your password"
-                enablePasswordToggle
-              />
-              <ThemedView style={styles.termsContainer}>
-                <Checkbox
-                  style={styles.checkbox}
-                  value={isChecked}
-                  onValueChange={setIsChecked}
-                />
-                <ThemedText style={styles.termsText}>
-                  Accept the terms and conditions
-                </ThemedText>
-              </ThemedView>
-
-              <ThemedButton style={styles.button} onPress={handleSubmit}>
-                SIGN UP
-              </ThemedButton>
-
-              <ThemedView style={styles.centerContainer}>
-                <ThemedText style={styles.stepContainer}>
-                  Already have an account?{" "}
-                  <ThemedText type="link" onPress={() => alert("Comming Soon")}>
-                    Sign in{" "}
-                  </ThemedText>
-                </ThemedText>
-              </ThemedView>
-            </ThemedView>
-          )}
-        </Formik>
+      {/* Profile Info */}
+      <ThemedView style={styles.profileDetails}>
+        <ThemedText style={styles.name}>{user.name}</ThemedText>
+        <ThemedView style={styles.infoRow}>
+          <IconButton icon="phone" size={20} />
+          <ThemedText style={styles.infoText}>{user.phone}</ThemedText>
+        </ThemedView>
+        <ThemedView style={styles.infoRow}>
+          <IconButton icon="email" size={20} />
+          <ThemedText style={styles.infoText}>{user.email}</ThemedText>
+        </ThemedView>
       </ThemedView>
-      <ThemedView style={styles.centerContainer}>
-        <ThemedText style={{ marginBottom: 8 }}>OR</ThemedText>
-        <ThemedText>
-          You want to become a rider?{" "}
-          <ThemedText type="link" onPress={() => alert("Comming Soon")}>
-            Click here
-          </ThemedText>
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+
+      <ThemedButton
+        loading={authLoading}
+        disabled={authLoading}
+        style={styles.logoutButton}
+        onPress={logout}
+      >
+        Logout
+      </ThemedButton>
+    </DefaultView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flex: 1,
-    flexDirection: "row",
+  header: {
+    height: 180,
     justifyContent: "center",
     alignItems: "center",
-    gap: 8,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "medium",
+  avatarContainer: {
+    position: "relative",
+    alignItems: "center",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  banner: {
-    height: 278,
-    width: "100%",
-    bottom: 0,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    left: 0,
+  editIcon: {
     position: "absolute",
+    bottom: 0,
+    right: 0,
+    height: 32,
+    width: 32,
+    backgroundColor: "#fff",
+    borderRadius: 50,
   },
-  button: {
-    marginHorizontal: 36,
-    marginBottom: 20,
+  profileDetails: {
+    alignItems: "center",
+    marginTop: 10,
+    paddingHorizontal: 20,
   },
-  termsContainer: {
-    flex: 1,
+  name: {
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+  infoRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
+    marginTop: 10,
   },
-  checkbox: {
-    alignSelf: "center",
-    width: 20,
-    height: 20,
-    marginRight: 6,
+  infoText: {
+    fontSize: 16,
   },
-  termsText: {
-    fontSize: 12,
-  },
-  centerContainer: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
+  logoutButton: {
+    marginTop: 40,
+    marginHorizontal: 60,
+    backgroundColor: "#FF3B30",
   },
 });
+
+export default AcountScreen;

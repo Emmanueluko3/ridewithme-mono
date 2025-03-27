@@ -23,3 +23,9 @@ export const signupSchema = Yup.object().shape({
     )
     .required(formFeedback.required("Password")),
 });
+
+export const bookRideSchema = Yup.object().shape({
+  pickup: Yup.string().required(formFeedback.required("Pickup")),
+  dropoff: Yup.string().required(formFeedback.required("Destination")),
+  carType: Yup.string().required(formFeedback.required("Car type")),
+});

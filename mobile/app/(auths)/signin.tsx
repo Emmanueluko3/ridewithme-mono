@@ -3,7 +3,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Formik } from "formik";
 import InputField from "@/components/common/Input";
-import { signinSchema } from "@/constants/schema";
+import { signinSchema } from "@/constants/validation-schema";
 import { ThemedButton } from "@/components/common/ThemedButton";
 import { useRouter } from "expo-router";
 import AuthView from "@/components/AuthView";
@@ -56,7 +56,12 @@ export default function Signin() {
                 enablePasswordToggle
               />
 
-              <ThemedButton style={styles.button} onPress={handleSubmit}>
+              <ThemedButton
+                loading={authLoading}
+                disabled={authLoading}
+                style={styles.button}
+                onPress={handleSubmit}
+              >
                 SIGN IN
               </ThemedButton>
 

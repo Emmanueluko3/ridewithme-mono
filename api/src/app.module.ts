@@ -10,6 +10,7 @@ import { UserModule } from './user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './auth/guards/accessToken.guard';
 import { ProfileModule } from './profile/profile.module';
+import { RideModule } from './ride/ride.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ProfileModule } from './profile/profile.module';
     AuthModule,
     UserModule,
     ProfileModule,
+    RideModule,
   ],
   controllers: [],
   providers: [

@@ -1,13 +1,12 @@
 import {
-  Animated,
-  Pressable,
   StyleSheet,
   ViewStyle,
   TextStyle,
+  TouchableOpacity,
 } from "react-native";
 import { ThemedText } from "../ThemedText";
-import { useRef, useState } from "react";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ActivityIndicator } from "react-native";
 
 interface ThemedButtonProps {
   children: React.ReactNode;
@@ -16,7 +15,8 @@ interface ThemedButtonProps {
   lightColor?: string;
   darkColor?: string;
   textStyle?: TextStyle;
-  backgroundColors?: [string, string];
+  loading?: boolean;
+  disabled?: boolean;
 }
 
 export function ThemedButton({
@@ -26,51 +26,27 @@ export function ThemedButton({
   lightColor,
   darkColor,
   textStyle,
-  backgroundColors = ["transparent", "#fff"],
+  loading,
+  disabled,
 }: ThemedButtonProps) {
-  const animation = useRef(new Animated.Value(0)).current;
-
   const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
 
-  const handlePressIn = () => {
-    Animated.timing(animation, {
-      toValue: 1,
-      duration: 60,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const handlePressOut = () => {
-    Animated.timing(animation, {
-      toValue: 0,
-      duration: 60,
-      useNativeDriver: false,
-    }).start();
-    onPress?.();
-  };
-
-  const backgroundColor = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: backgroundColors,
-  });
-
   return (
-    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut}>
-      <Animated.View
-        style={[
-          styles.buttonContainer,
-          { backgroundColor },
-          { borderColor: "#E8ECEF" ?? color },
-          style,
-        ]}
-      >
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={onPress}
+      style={[styles.buttonContainer, { borderColor: color }, style]}
+    >
+      {loading ? (
+        <ActivityIndicator animating={true} color={color} />
+      ) : (
         <ThemedText
           style={[{ color: color, fontSize: 16, fontWeight: 500 }, textStyle]}
         >
           {children}
         </ThemedText>
-      </Animated.View>
-    </Pressable>
+      )}
+    </TouchableOpacity>
   );
 }
 

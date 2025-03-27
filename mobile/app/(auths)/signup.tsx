@@ -5,15 +5,16 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Formik } from "formik";
 import InputField from "@/components/common/Input";
-import { signinSchema } from "@/constants/schema";
+import { signinSchema } from "@/constants/validation-schema";
 import { ThemedButton } from "@/components/common/ThemedButton";
 import { useRouter } from "expo-router";
 import AuthView from "@/components/AuthView";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Signup() {
   const [isChecked, setIsChecked] = useState(false);
   const router = useRouter();
-
+  const { authLoading, handleRegisterUser } = useAuth();
   return (
     <AuthView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#061220" }}
@@ -33,7 +34,7 @@ export default function Signup() {
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={signinSchema}
-          onSubmit={(values) => alert("Signup coming soon")}
+          onSubmit={(values) => handleRegisterUser(values)}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
             <ThemedView style={{ paddingVertical: 16 }}>
@@ -67,7 +68,12 @@ export default function Signup() {
                 </ThemedText>
               </ThemedView>
 
-              <ThemedButton style={styles.button} onPress={handleSubmit}>
+              <ThemedButton
+                loading={authLoading}
+                disabled={authLoading}
+                style={styles.button}
+                onPress={handleSubmit}
+              >
                 SIGN UP
               </ThemedButton>
 

@@ -5,7 +5,7 @@ import { useStorageState } from "@/hooks/useStorageState";
 import { ThemedView } from "@/components/ThemedView";
 import { ActivityIndicator } from "react-native";
 import { useMutation } from "@apollo/client";
-import { LOGIN_MUTATION } from "@/grahpql/mutations/auth";
+import { LOGIN_MUTATION, REGISTER_MUTATION } from "@/grahpql/mutations/auth";
 import Toast from "react-native-toast-message";
 
 type AuthContextType = {
@@ -13,7 +13,7 @@ type AuthContextType = {
   accessToken: string | null;
   refreshToken: string | null;
   authLoading: boolean;
-  login: (userData: User) => void;
+  login: (payload: User) => void;
   handleRegisterUser: (payload: User) => Promise<any>;
   logout: () => void;
 };
@@ -26,10 +26,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [[loadingRefreshToken, refreshToken], setRefreshToken] =
     useStorageState("refreshToken");
   const [[loadingUser, storedUser], setStoredUser] = useStorageState("user");
-  const [loginMutation, { loading }] = useMutation(LOGIN_MUTATION);
+
+  // Gql mutation
+  const [registerMutation, { loading: isRegisterLoading }] =
+    useMutation(REGISTER_MUTATION);
+  const [loginMutation, { loading: isLoginLoading }] =
+    useMutation(LOGIN_MUTATION);
 
   const authLoading =
-    loadingToken || loadingRefreshToken || loadingUser || loading;
+    loadingToken ||
+    loadingRefreshToken ||
+    loadingUser ||
+    isRegisterLoading ||
+    isLoginLoading;
 
   const user = (() => {
     try {
@@ -51,10 +60,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setStoredUser(JSON.stringify(user));
   };
 
-  const login = async (userData: User) => {
+  const login = async (payload: User) => {
     try {
       const { data } = await loginMutation({
-        variables: { input: userData },
+        variables: { input: payload },
       });
       if (data?.login?.accessToken && data?.login?.refreshToken) {
         setCredentials(
@@ -78,23 +87,49 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         text1: "Error",
         text2: error.message || "Login failed",
       });
-      // console.error("Error during auth login:", error);
     }
   };
 
   const handleRegisterUser = async (payload: User) => {
     try {
+      const { data } = await registerMutation({
+        variables: { input: payload },
+      });
+      if (data?.register?.accessToken && data?.register?.refreshToken) {
+        setCredentials(
+          data.register.accessToken,
+          data.register.refreshToken,
+          data.register.user
+        );
+
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: "Registration Successful!",
+        });
+        router.push("/(tabs)");
+      } else {
+        throw new Error("Invalid response from server");
+      }
     } catch (error: any) {
-      // console.error("Error during auth login:", error);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error.message || "Registration failed",
+      });
     }
   };
 
   const logout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
-    setStoredUser(null);
     setAccessToken(null);
-    router.push("/(auths)/signin");
+    setRefreshToken(null);
+    setStoredUser(null);
+
+    Toast.show({
+      type: "success",
+      text1: "Success",
+      text2: "Logout Successful!",
+    });
   };
 
   return (

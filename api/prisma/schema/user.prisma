@@ -8,6 +8,7 @@ model User {
   isDisabled         Boolean   @default(false)
   type               UserType  @default(RIDER)
   profile            Profile?
+  rides              Ride[]
   verifiedAt         DateTime?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @default(now())

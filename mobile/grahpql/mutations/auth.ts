@@ -9,13 +9,12 @@ export const REGISTER_MUTATION = gql`
         id
         name
         email
-        username
-      } 
+        type
+      }
     }
   }
 `;
- 
- 
+
 export const LOGIN_MUTATION = gql`
   mutation LoginUser($input: LoginInput!) {
     login(input: $input) {
@@ -24,10 +23,9 @@ export const LOGIN_MUTATION = gql`
       user {
         id
         name
-        email 
-        role
-      } 
+        email
+        type
+      }
     }
   }
 `;
- 

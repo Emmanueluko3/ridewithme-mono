@@ -59,6 +59,7 @@ const InputField: React.FC<InputFieldProps> = ({
           <TextInput
             {...props}
             secureTextEntry={enablePasswordToggle && !showPassword}
+            placeholderTextColor={color}
             style={{
               flex: 1,
               fontSize: 16,

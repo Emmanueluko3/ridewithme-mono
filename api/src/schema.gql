@@ -21,7 +21,7 @@ type User {
   email: String!
   name: String
   phone: String
-  role: UserType
+  type: UserType
   profile: Profile
   createdAt: DateTime!
   verifiedAt: DateTime
@@ -52,10 +52,36 @@ type UserResponse {
   user: User!
 }
 
+type Ride {
+  id: Int
+  user: User
+  pickup: String
+  dropoff: String
+  carType: String
+  fare: String
+  status: RideStatus
+  createdAt: String
+  updatedAt: String
+}
+
+"""ride status"""
+enum RideStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+type Rides {
+  rides: [Ride!]!
+  totalCount: Int!
+}
+
 type Query {
-  users: [User!]!
   user(id: Int!): User!
   me: User!
+  rides: Rides!
+  ride(id: Int!): Ride!
 }
 
 type Mutation {
@@ -63,6 +89,9 @@ type Mutation {
   login(input: LoginInput!): AuthResponse!
   logout: BasicResponse!
   updateMe(input: UpdateMeInput!): UserResponse!
+  bookRide(bookRideInput: BookRideInput!): Ride!
+  updateRide(updateRideInput: UpdateRideInput!): Ride!
+  removeRide(id: Int!): Ride!
 }
 
 input RegisterInput {
@@ -89,4 +118,17 @@ input UpdateMeInput {
 input UpdateProfileInput {
   bio: String
   location: String
+}
+
+input BookRideInput {
+  pickup: String!
+  dropoff: String!
+  carType: String!
+}
+
+input UpdateRideInput {
+  pickup: String
+  dropoff: String
+  carType: String
+  id: Int!
 }

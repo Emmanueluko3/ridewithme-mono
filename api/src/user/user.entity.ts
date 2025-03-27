@@ -22,7 +22,7 @@ export class User {
   phone?: string;
 
   @Field((type) => UserType, { nullable: true })
-  role?: UserType;
+  type?: UserType;
 
   @Field((type) => Profile, { nullable: true })
   profile?: Profile;

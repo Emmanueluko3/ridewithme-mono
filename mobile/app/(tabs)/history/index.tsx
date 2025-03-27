@@ -3,6 +3,8 @@ import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import HistoryItem from "@/components/historyItem";
+import { useQuery } from "@apollo/client";
+import { GET_RIDES } from "@/grahpql/queries/rides";
 
 const histories = [
   { id: "1", amount: 50, date: "2025-03-23", type: "Credit" },
@@ -13,11 +15,15 @@ const histories = [
 ];
 
 const History = () => {
+  const { data, loading, error } = useQuery(GET_RIDES);
+
   return (
     <ThemedView style={styles.container}>
+      {loading && <ThemedText>Loading...</ThemedText>}
+      {error && <ThemedText>Error: {error.message}</ThemedText>}
       <ThemedText style={styles.title}> My Rides</ThemedText>
       <FlatList
-        data={histories}
+        data={data.rides}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity

@@ -10,12 +10,6 @@ import { UserResponse } from './dto/user-response';
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Public()
-  @Query(() => [User], { name: 'users' })
-  users() {
-    return this.userService.findAll();
-  }
-
   @Query(() => User)
   user(@Args('id', { type: () => Int }) id: number) {
     return this.userService.find(id);
