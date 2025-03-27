@@ -61,8 +61,8 @@ export default function HomeScreen() {
           <ThemedView style={styles.stepContainer}>
             <Formik
               initialValues={{
-                pickUpPoint: "",
-                destination: "",
+                pickup: "",
+                dropoff: "",
                 carType: selectedCar,
               }}
               validationSchema={bookRideSchema}
@@ -75,12 +75,12 @@ export default function HomeScreen() {
                   }}
                 >
                   <InputField
-                    name="pickUpPoint"
-                    onChangeText={handleChange("pickUpPoint")}
-                    error={errors.pickUpPoint}
-                    onBlur={handleBlur("pickUpPoint")}
+                    name="pickup"
+                    onChangeText={handleChange("pickup")}
+                    error={errors.pickup}
+                    onBlur={handleBlur("pickup")}
                     placeholder="Pick up location"
-                    value={values.pickUpPoint}
+                    value={values.pickup}
                   />
                   <Ionicons
                     name="swap-vertical"
@@ -89,11 +89,11 @@ export default function HomeScreen() {
                     style={{ marginHorizontal: "auto", marginBottom: 8 }}
                   />
                   <InputField
-                    name="destination"
-                    onChangeText={handleChange("destination")}
-                    error={errors.destination}
-                    onBlur={handleBlur("destination")}
-                    placeholder="Destination"
+                    name="dropoff"
+                    onChangeText={handleChange("dropoff")}
+                    error={errors.dropoff}
+                    onBlur={handleBlur("dropoff")}
+                    placeholder="dropoff"
                   />
 
                   <ThemedView style={styles.carTypeContainer}>
