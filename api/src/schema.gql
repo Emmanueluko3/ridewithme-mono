@@ -57,17 +57,25 @@ type Ride {
   user: User
   pickup: String
   dropoff: String
-  carType: String
+  carType: CartType
   fare: String
   status: RideStatus
   createdAt: String
   updatedAt: String
 }
 
+"""Cart Type"""
+enum CartType {
+  SEDAN
+  SUV
+  HATCHBACK
+  TRUCK
+}
+
 """ride status"""
 enum RideStatus {
   PENDING
-  ACTIVE
+  CONFIRMED
   COMPLETED
   CANCELLED
 }
@@ -89,7 +97,7 @@ type Mutation {
   login(input: LoginInput!): AuthResponse!
   logout: BasicResponse!
   updateMe(input: UpdateMeInput!): UserResponse!
-  bookRide(bookRideInput: BookRideInput!): Ride!
+  bookRide(input: BookRideInput!): Ride!
   updateRide(updateRideInput: UpdateRideInput!): Ride!
   removeRide(id: Int!): Ride!
 }
@@ -123,12 +131,12 @@ input UpdateProfileInput {
 input BookRideInput {
   pickup: String!
   dropoff: String!
-  carType: String!
+  carType: CartType!
 }
 
 input UpdateRideInput {
   pickup: String
   dropoff: String
-  carType: String
+  carType: CartType
   id: Int!
 }

@@ -1,4 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
+import { CartType } from '../entities/ride.entity';
 
 @InputType()
 export class BookRideInput {
@@ -8,6 +9,6 @@ export class BookRideInput {
   @Field(() => String)
   dropoff: string;
 
-  @Field(() => String)
-  carType: string;
+  @Field(() => CartType)
+  carType: CartType;
 }

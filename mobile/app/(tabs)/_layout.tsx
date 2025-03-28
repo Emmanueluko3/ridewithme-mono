@@ -1,4 +1,4 @@
-import { Tabs } from "expo-router";
+import { Stack, Tabs } from "expo-router";
 import React from "react";
 import { Platform } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -34,6 +34,7 @@ export default function TabLayout() {
           name="index"
           options={{
             title: "Home",
+            animation: "fade",
             tabBarIcon: ({ color }) => (
               <Entypo size={24} name="home" color={color} />
             ),
@@ -44,9 +45,10 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="history/index"
+          name="rides"
           options={{
-            title: "History",
+            title: "Rides",
+            animation: "fade",
             tabBarIcon: ({ color }) => (
               <FontAwesome size={24} name="history" color={color} />
             ),
@@ -60,6 +62,7 @@ export default function TabLayout() {
           name="account"
           options={{
             title: "Account",
+            animation: "fade",
             tabBarIcon: ({ color }) => (
               <FontAwesome name="user-circle-o" size={24} color={color} />
             ),

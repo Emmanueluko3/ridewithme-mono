@@ -18,3 +18,21 @@ export const getToken = async (key: string) => {
     return null;
   }
 };
+
+export const formatTimestamp = (timestamp: number): string => {
+  const date = new Date(timestamp);
+
+  const formattedDate = new Intl.DateTimeFormat("en-US", {
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
+
+  return formattedDate.replace(",", "").replace(" ", ", ");
+};
+
+export const truncateText = (text: string, maxLength: number = 20): string => {
+  return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+};

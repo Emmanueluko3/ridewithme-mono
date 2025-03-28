@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import DefaultView from "@/components/DefaultView";
+import DefaultView from "@/components/views/DefaultView";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+import { ThemedView } from "@/components/views/ThemedView";
 import { Formik } from "formik";
 import InputField from "@/components/common/Input";
 import { bookRideSchema } from "@/constants/validation-schema";
@@ -16,6 +16,9 @@ import Animated, {
   useScrollViewOffset,
 } from "react-native-reanimated";
 import { useState } from "react";
+import { useMutation } from "@apollo/client";
+import { BOOK_RIDE } from "@/grahpql/queries/rides";
+import Toast from "react-native-toast-message";
 
 const MAP_HEIGHT = 400;
 
@@ -47,6 +50,33 @@ export default function HomeScreen() {
   const carTypes = ["Sedan", "SUV", "Hatchback", "Truck"];
   const [selectedCar, setSelectedCar] = useState(carTypes[0]);
 
+  const [bookRide, { loading, data }] = useMutation(BOOK_RIDE);
+
+  const handleBookRide = async (payload: {
+    pickup: string;
+    dropoff: string;
+    carType: string;
+  }) => {
+    try {
+      const response = await bookRide({
+        variables: {
+          input: payload,
+        },
+      });
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Ride booked successful!",
+      });
+    } catch (error: any) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: error.message || "Error booking ride",
+      });
+    }
+  };
+
   return (
     <DefaultView style={styles.root}>
       <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
@@ -63,12 +93,19 @@ export default function HomeScreen() {
               initialValues={{
                 pickup: "",
                 dropoff: "",
-                carType: selectedCar,
+                carType: selectedCar.toUpperCase(),
               }}
               validationSchema={bookRideSchema}
-              onSubmit={(values) => alert("Signup coming soon")}
+              onSubmit={(values) => handleBookRide(values)}
             >
-              {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+              {({
+                handleChange,
+                setFieldValue,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+              }) => (
                 <ThemedView
                   style={{
                     paddingVertical: 16,
@@ -93,7 +130,7 @@ export default function HomeScreen() {
                     onChangeText={handleChange("dropoff")}
                     error={errors.dropoff}
                     onBlur={handleBlur("dropoff")}
-                    placeholder="dropoff"
+                    placeholder="Drop off location"
                   />
 
                   <ThemedView style={styles.carTypeContainer}>
@@ -104,7 +141,10 @@ export default function HomeScreen() {
                       {carTypes.map((car, index) => (
                         <TouchableOpacity
                           key={index}
-                          onPress={() => setSelectedCar(car)}
+                          onPress={() => {
+                            setFieldValue("carType", car.toUpperCase());
+                            setSelectedCar(car);
+                          }}
                           style={[
                             styles.carTypeItem,
                             {
@@ -132,9 +172,15 @@ export default function HomeScreen() {
                     </ThemedView>
                   </ThemedView>
 
-                  <ThemedButton style={styles.button} onPress={handleSubmit}>
-                    Proceed
-                  </ThemedButton>
+                  {values.pickup && values.dropoff && values.carType && (
+                    <ThemedButton
+                      loading={loading}
+                      style={styles.button}
+                      onPress={handleSubmit}
+                    >
+                      Proceed
+                    </ThemedButton>
+                  )}
                 </ThemedView>
               )}
             </Formik>

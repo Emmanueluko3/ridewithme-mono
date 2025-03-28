@@ -1,5 +1,17 @@
 import { gql } from "@apollo/client";
 
+export const BOOK_RIDE = gql`
+  mutation BookRide($input: BookRideInput!) {
+    bookRide(input: $input) {
+      id
+      pickup
+      dropoff
+      carType
+      status
+    }
+  }
+`;
+
 export const GET_RIDES = gql`
   query GetRides {
     rides {

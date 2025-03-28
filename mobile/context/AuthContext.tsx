@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 import { Redirect, useRouter } from "expo-router";
 import { User } from "@/constants/types";
 import { useStorageState } from "@/hooks/useStorageState";
-import { ThemedView } from "@/components/ThemedView";
+import { ThemedView } from "@/components/views/ThemedView";
 import { ActivityIndicator } from "react-native";
 import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION, REGISTER_MUTATION } from "@/grahpql/mutations/auth";

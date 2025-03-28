@@ -1,12 +1,12 @@
 import { Image, StyleSheet } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+import { ThemedView } from "@/components/views/ThemedView";
 import { Formik } from "formik";
 import InputField from "@/components/common/Input";
 import { signinSchema } from "@/constants/validation-schema";
 import { ThemedButton } from "@/components/common/ThemedButton";
 import { useRouter } from "expo-router";
-import AuthView from "@/components/AuthView";
+import AuthView from "@/components/views/AuthView";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Signin() {

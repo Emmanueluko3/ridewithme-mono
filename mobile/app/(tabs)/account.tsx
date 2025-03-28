@@ -1,6 +1,6 @@
-import DefaultView from "@/components/DefaultView";
+import DefaultView from "@/components/views/DefaultView";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
+import { ThemedView } from "@/components/views/ThemedView";
 import { ThemedButton } from "@/components/common/ThemedButton";
 import { useAuth } from "@/context/AuthContext";
 import React from "react";
@@ -14,7 +14,8 @@ const AcountScreen = () => {
     name: "John Doe",
     phone: "+123 456 7890",
     email: "johndoe@email.com",
-    profileImage: "https://randomuser.me/api/portraits/men/45.jpg",
+    profileImage:
+      "https://lh3.googleusercontent.com/a/ACg8ocJOf5-6C08bTot-KOdhN28fEJyxpjLHDWYK-ZbDSmBReK8e0Hti=s288-c-no",
   };
 
   return (

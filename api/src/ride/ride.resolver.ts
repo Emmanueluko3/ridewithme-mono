@@ -13,9 +13,9 @@ export class RideResolver {
   @Mutation(() => Ride)
   async bookRide(
     @AuthUser() user: { userId: number; email: string },
-    @Args('bookRideInput') bookRideInput: BookRideInput,
+    @Args('input') input: BookRideInput,
   ) {
-    return await this.rideService.bookRide(user.userId, bookRideInput);
+    return await this.rideService.bookRide(user.userId, input);
   }
 
   @Query(() => Rides)

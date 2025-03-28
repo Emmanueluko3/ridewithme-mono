@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { ErrorMessage } from "formik";
 import { Entypo } from "@expo/vector-icons";
-import { ThemedView } from "@/components/ThemedView";
+import { ThemedView } from "@/components/views/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
@@ -35,7 +35,7 @@ const InputField: React.FC<InputFieldProps> = ({
     setShowPassword((prev) => !prev);
   };
 
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, "text");
+  const color = useThemeColor({ light: lightColor, dark: darkColor }, "tint");
 
   return (
     <ThemedView style={{ marginBottom: 12 }}>
