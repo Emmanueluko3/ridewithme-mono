@@ -35,7 +35,7 @@ const History = () => {
       <ThemedText style={styles.title}> My Rides</ThemedText>
       {error ? (
         <ThemedText style={styles.error}>Error: {error.message}</ThemedText>
-      ) : !data.rides.rides ? (
+      ) : data.rides.rides.length == 0 ? (
         <ThemedText style={styles.noDataFound}>
           No ride history yet, Please book a ride
         </ThemedText>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     color: "red",
     textAlign: "center",
   },
-  noDataFound: { flex: 1, color: "yellow", textAlign: "center" },
+  noDataFound: { flex: 1, color: "gray", textAlign: "center" },
   container: {
     flex: 1,
     paddingVertical: 56,

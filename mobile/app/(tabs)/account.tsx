@@ -30,7 +30,7 @@ const AcountScreen = () => {
           <IconButton
             icon="pencil"
             size={16}
-            onPress={() => console.log("Edit Profile")}
+            onPress={() => alert("Edit Profile Coming Soon!")}
             style={styles.editIcon}
           />
         </ThemedView>

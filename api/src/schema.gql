@@ -88,8 +88,35 @@ type Rides {
 type Query {
   user(id: Int!): User!
   me: User!
-  rides: Rides!
+  rides(params: FindAllRideInput): Rides!
   ride(id: Int!): Ride!
+}
+
+input FindAllRideInput {
+  sortBy: SortBy
+  sortOrder: SortOrder
+  page: Int
+  limit: Int
+  filters: FilterRideInput
+}
+
+"""Sort by"""
+enum SortBy {
+  createdAt
+  updatedAt
+}
+
+"""Sort order"""
+enum SortOrder {
+  asc
+  desc
+}
+
+input FilterRideInput {
+  pickup: String
+  dropoff: String
+  carType: CartType
+  status: RideStatus
 }
 
 type Mutation {

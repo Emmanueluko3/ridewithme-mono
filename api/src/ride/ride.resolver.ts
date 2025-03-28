@@ -5,6 +5,7 @@ import { BookRideInput } from './dto/book-ride.input';
 import { UpdateRideInput } from './dto/update-ride.input';
 import { Rides } from './entities/rides.entity';
 import { AuthUser } from 'src/auth/decorators/auth-user.decorator';
+import { FindAllRideInput } from './dto/find-all-ride.input';
 
 @Resolver(() => Ride)
 export class RideResolver {
@@ -19,8 +20,11 @@ export class RideResolver {
   }
 
   @Query(() => Rides)
-  async rides() {
-    return await this.rideService.findAllRide();
+  async rides(
+    @AuthUser() user: { userId: number; email: string },
+    @Args('params', { nullable: true }) params?: FindAllRideInput,
+  ) {
+    return await this.rideService.findAllRide(user.userId, params);
   }
 
   @Query(() => Ride)

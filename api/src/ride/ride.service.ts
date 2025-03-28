@@ -27,24 +27,22 @@ export class RideService {
     });
   }
 
-  async findAllRide(params?: FindAllRideInput) {
+  async findAllRide(userId: number, params?: FindAllRideInput) {
     const {
       sortBy = 'updatedAt',
       sortOrder = 'desc',
       page = 1,
       limit = 10,
-      filters,
+      filters = {},
     } = params || {};
 
-    const whereClauses: Prisma.RideWhereInput[] = [];
+    const where: Prisma.RideWhereInput = {
+      AND: [{ userId }, filters],
+    };
 
-    if (filters) {
-      whereClauses.push(filters);
-    }
-
-    const where = whereClauses.length > 0 ? { AND: whereClauses } : undefined;
-
-    const orderBy = [{ [sortBy]: sortOrder }];
+    const orderBy: Prisma.RideOrderByWithRelationInput = {
+      [sortBy]: sortOrder as 'asc' | 'desc',
+    };
 
     const skip = (page - 1) * limit;
 
@@ -54,7 +52,7 @@ export class RideService {
         include: {
           user: true,
         },
-        orderBy: orderBy as Prisma.RideOrderByWithRelationInput[],
+        orderBy,
         skip,
         take: limit,
       }),
