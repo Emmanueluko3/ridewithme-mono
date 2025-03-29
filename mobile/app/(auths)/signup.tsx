@@ -32,12 +32,22 @@ export default function Signup() {
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <Formik
-          initialValues={{ email: "", password: "" }}
+          initialValues={{ name: "", email: "", phone: "", password: "" }}
           validationSchema={signinSchema}
           onSubmit={(values) => handleRegisterUser(values)}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
             <ThemedView style={{ paddingVertical: 16 }}>
+              <InputField
+                name="name"
+                label="Name"
+                onChangeText={handleChange("name")}
+                error={errors.name}
+                onBlur={handleBlur("name")}
+                placeholder="Enter your name"
+                value={values.name}
+              />
+
               <InputField
                 name="email"
                 label="Email"
@@ -46,6 +56,16 @@ export default function Signup() {
                 onBlur={handleBlur("email")}
                 placeholder="Enter your email"
                 value={values.email}
+              />
+
+              <InputField
+                name="phone"
+                label="Phone Number"
+                onChangeText={handleChange("phone")}
+                error={errors.phone}
+                onBlur={handleBlur("phone")}
+                placeholder="Enter your phone number"
+                value={values.phone}
               />
 
               <InputField

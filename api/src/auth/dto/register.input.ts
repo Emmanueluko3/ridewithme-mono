@@ -11,6 +11,9 @@ export class RegisterInput {
   @Field(() => String, { nullable: true })
   name: string;
 
+  @Field(() => String, { nullable: true })
+  phone: string;
+
   @IsNotEmpty()
   @Field(() => String)
   password: string;

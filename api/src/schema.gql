@@ -133,6 +133,7 @@ type Mutation {
 input RegisterInput {
   email: String!
   name: String
+  phone: String
   password: String!
 }
 

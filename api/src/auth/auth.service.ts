@@ -32,6 +32,7 @@ export class AuthService {
       data: {
         email: registerInput.email,
         name: registerInput.name,
+        phone: registerInput.phone,
         hashedPassword,
       },
     });
