@@ -88,6 +88,7 @@ type Rides {
 type Query {
   user(id: Int!): User!
   me: User!
+  getBookedRide: Ride!
   rides(params: FindAllRideInput): Rides!
   ride(id: Int!): Ride!
 }
@@ -125,7 +126,7 @@ type Mutation {
   logout: BasicResponse!
   updateMe(input: UpdateMeInput!): UserResponse!
   bookRide(input: BookRideInput!): Ride!
-  updateRide(updateRideInput: UpdateRideInput!): Ride!
+  updateRide(id: Int!, input: UpdateRideInput!): Ride!
   removeRide(id: Int!): Ride!
 }
 
@@ -162,8 +163,5 @@ input BookRideInput {
 }
 
 input UpdateRideInput {
-  pickup: String
-  dropoff: String
-  carType: CartType
-  id: Int!
+  status: RideStatus!
 }

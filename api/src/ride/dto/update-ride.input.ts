@@ -1,8 +1,8 @@
-import { BookRideInput } from './book-ride.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
+import { RideStatus } from '../entities/ride.entity';
 
 @InputType()
-export class UpdateRideInput extends PartialType(BookRideInput) {
-  @Field(() => Int)
-  id: number;
+export class UpdateRideInput {
+  @Field(() => RideStatus)
+  status: RideStatus;
 }

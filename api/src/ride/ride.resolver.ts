@@ -19,6 +19,11 @@ export class RideResolver {
     return await this.rideService.bookRide(user.userId, input);
   }
 
+  @Query(() => Ride)
+  async getBookedRide(@AuthUser() user: { userId: number; email: string }) {
+    return await this.rideService.getBookedRide(user.userId);
+  }
+
   @Query(() => Rides)
   async rides(
     @AuthUser() user: { userId: number; email: string },
@@ -33,8 +38,12 @@ export class RideResolver {
   }
 
   @Mutation(() => Ride)
-  async updateRide(@Args('updateRideInput') updateRideInput: UpdateRideInput) {
-    return await this.rideService.update(updateRideInput.id, updateRideInput);
+  async updateRide(
+    @AuthUser() user: { userId: number; email: string },
+    @Args('id', { type: () => Int }) id: number,
+    @Args('input') input: UpdateRideInput,
+  ) {
+    return await this.rideService.update(user.userId, id, input);
   }
 
   @Mutation(() => Ride)

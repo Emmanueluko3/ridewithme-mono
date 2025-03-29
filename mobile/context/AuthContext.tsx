@@ -4,9 +4,10 @@ import { User } from "@/constants/types";
 import { useStorageState } from "@/hooks/useStorageState";
 import { ThemedView } from "@/components/views/ThemedView";
 import { ActivityIndicator } from "react-native";
-import { useMutation } from "@apollo/client";
+import { useApolloClient, useMutation } from "@apollo/client";
 import { LOGIN_MUTATION, REGISTER_MUTATION } from "@/grahpql/mutations/auth";
 import Toast from "react-native-toast-message";
+import { useGlobalStore } from "@/store";
 
 type AuthContextType = {
   user: User | null;
@@ -27,11 +28,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useStorageState("refreshToken");
   const [[loadingUser, storedUser], setStoredUser] = useStorageState("user");
 
-  // Gql mutation
+  // Gql
+  const client = useApolloClient();
   const [registerMutation, { loading: isRegisterLoading }] =
     useMutation(REGISTER_MUTATION);
   const [loginMutation, { loading: isLoginLoading }] =
     useMutation(LOGIN_MUTATION);
+  const { setUser } = useGlobalStore();
 
   const authLoading =
     loadingToken ||
@@ -58,6 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setAccessToken(accessToken);
     setRefreshToken(refreshToken);
     setStoredUser(JSON.stringify(user));
+    setUser(user);
   };
 
   const login = async (payload: User) => {
@@ -121,6 +125,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
+    client.resetStore();
     setAccessToken(null);
     setRefreshToken(null);
     setStoredUser(null);

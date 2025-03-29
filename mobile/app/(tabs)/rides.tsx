@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import HistoryItem from "@/components/historyItem";
@@ -10,12 +10,21 @@ import DefaultView from "@/components/views/DefaultView";
 import RideDetailsModal from "@/components/RideDetailsModal";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ThemedView } from "@/components/views/ThemedView";
+import { useFocusEffect } from "expo-router";
 
 const History = () => {
   const color = useThemeColor({ light: "#061220", dark: "#A1CEDC" }, "text");
   const [selectedRide, setSelectedRide] = useState(null);
+  const { data, loading, error, refetch } = useQuery(GET_RIDES, {
+    fetchPolicy: "cache-and-network",
+  });
 
-  const { data, loading, error } = useQuery(GET_RIDES);
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [])
+  );
+
   if (loading)
     return (
       <ThemedView
@@ -44,6 +53,8 @@ const History = () => {
           <FlatList
             data={data.rides.rides}
             keyExtractor={(item) => item.id}
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
             renderItem={({ item }) => (
               <TouchableOpacity onPress={() => setSelectedRide(item)}>
                 <HistoryItem item={item} />

@@ -14,6 +14,16 @@ export class RideService {
   constructor(private readonly prisma: PrismaService) {}
 
   async bookRide(id: number, bookRideInput: BookRideInput) {
+    const existingRide = await this.prisma.ride.findFirst({
+      where: { userId: id, status: 'PENDING' },
+    });
+
+    if (existingRide) {
+      throw new BadRequestException(
+        'You already have a pending ride. Complete or cancel it before booking a new one.',
+      );
+    }
+
     const { pickup, dropoff, carType } = bookRideInput;
     if (pickup === dropoff) {
       throw new BadRequestException('Pickup and drop-off cannot be the same.');
@@ -27,12 +37,28 @@ export class RideService {
     });
   }
 
+  async getBookedRide(userId: number) {
+    const ride = await this.prisma.ride.findFirst({
+      where: { userId, status: 'PENDING' },
+      include: {
+        user: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    if (!ride) throw new NotFoundException('Ride not found');
+
+    return ride;
+  }
+
   async findAllRide(userId: number, params?: FindAllRideInput) {
     const {
       sortBy = 'updatedAt',
       sortOrder = 'desc',
       page = 1,
-      limit = 10,
+      limit = 30,
       filters = {},
     } = params || {};
 
@@ -76,8 +102,18 @@ export class RideService {
     return ride;
   }
 
-  update(id: number, updateRideInput: UpdateRideInput) {
-    return `This action updates a #${id} ride`;
+  async update(userId: number, id: number, updateRideInput: UpdateRideInput) {
+    const ride = await this.prisma.ride.update({
+      where: { id, userId },
+      data: { status: updateRideInput.status },
+      include: {
+        user: true,
+      },
+    });
+
+    if (!ride) throw new NotFoundException('Ride not found');
+
+    return ride;
   }
 
   remove(id: number) {

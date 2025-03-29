@@ -5,3 +5,10 @@ export interface User {
   phone?: string;
   location?: string;
 }
+
+export enum RideStatus {
+  PENDING = "PENDING",
+  CONFIRMED = "CONFIRMED",
+  COMPLETED = "COMPLETED",
+  CANCELLED = "CANCELLED",
+}

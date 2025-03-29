@@ -1,11 +1,12 @@
 import React from "react";
-import { Modal, TouchableOpacity, StyleSheet, View } from "react-native";
+import { Modal, StyleSheet, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { runOnJS } from "react-native-reanimated";
 import { ThemedView } from "./views/ThemedView";
 import { ThemedText } from "./ThemedText";
 import { ThemedButton } from "./common/ThemedButton";
 import { formatTimestamp } from "@/constants/helpers";
+import MapScreen from "./screens/MapScreen";
 
 interface Ride {
   id: string;
@@ -45,7 +46,7 @@ const RideDetailsModal: React.FC<RideDetailsModalProps> = ({
     >
       <GestureDetector gesture={swipeGesture}>
         <ThemedView style={styles.modalContainer}>
-          <View>
+          <View style={{ padding: 20 }}>
             <ThemedText style={styles.modalTitle}>
               Ride With {ride?.user?.name?.split(" ")[0]}
             </ThemedText>
@@ -53,6 +54,8 @@ const RideDetailsModal: React.FC<RideDetailsModalProps> = ({
               {formatTimestamp(parseFloat(ride.createdAt))}
             </ThemedText>
           </View>
+          <MapScreen pickup={ride.pickup} dropoff={ride.dropoff} isViewOnly />
+
           <ThemedView style={styles.content}>
             <ThemedText style={styles.modalText}>
               Pickup: {ride.pickup}
@@ -80,7 +83,6 @@ const RideDetailsModal: React.FC<RideDetailsModalProps> = ({
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    padding: 20,
     paddingVertical: 100,
   },
   modalTitle: {
@@ -91,14 +93,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   content: {
-    marginVertical: 60,
+    padding: 20,
+    marginBottom: 60,
   },
   modalText: {
     fontSize: 18,
     marginVertical: 5,
   },
   closeButton: {
-    marginTop: 20,
+    margin: 20,
   },
 });
 

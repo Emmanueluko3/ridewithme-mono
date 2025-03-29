@@ -25,7 +25,7 @@ const HistoryItem = ({
       <View style={styles.carContainer}>
         <FontAwesome5 name="car" size={24} color={color} />
       </View>
-      <ThemedView>
+      <ThemedView style={{ marginRight: "auto" }}>
         <ThemedText style={styles.pickup}>
           {truncateText(item.pickup, 18)}
         </ThemedText>
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   carContainer: {
     padding: 8,
     shadowRadius: 50,
+    marginRight: 20,
     borderRadius: 50,
     backgroundColor: "rgba(0, 123, 255, 0.2)",
   },
