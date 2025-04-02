@@ -5,7 +5,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/views/ThemedView";
 import { Formik } from "formik";
 import InputField from "@/components/common/Input";
-import { signinSchema } from "@/constants/validation-schema";
+import { signupSchema } from "@/constants/validation-schema";
 import { ThemedButton } from "@/components/common/ThemedButton";
 import { useRouter } from "expo-router";
 import AuthView from "@/components/views/AuthView";
@@ -33,7 +33,7 @@ export default function Signup() {
       <ThemedView style={styles.stepContainer}>
         <Formik
           initialValues={{ name: "", email: "", phone: "", password: "" }}
-          validationSchema={signinSchema}
+          validationSchema={signupSchema}
           onSubmit={(values) => handleRegisterUser(values)}
         >
           {({ handleChange, handleBlur, handleSubmit, values, errors }) => (

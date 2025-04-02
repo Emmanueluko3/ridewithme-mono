@@ -2,8 +2,6 @@ import { formFeedback } from "@/constants/helpers";
 import * as Yup from "yup";
 
 export const signinSchema = Yup.object().shape({
-  name: Yup.string().required(formFeedback.required("Name")),
-  phone: Yup.string().required(formFeedback.required("Phone Number")),
   email: Yup.string()
     .email(formFeedback.invalidEmail)
     .required(formFeedback.required("Email")),
@@ -11,6 +9,8 @@ export const signinSchema = Yup.object().shape({
 });
 
 export const signupSchema = Yup.object().shape({
+  name: Yup.string().required(formFeedback.required("Name")),
+  phone: Yup.string().required(formFeedback.required("Phone Number")),
   email: Yup.string()
     .email(formFeedback.invalidEmail)
     .required(formFeedback.required("Email")),

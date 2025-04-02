@@ -52,6 +52,7 @@ const AcountScreen = () => {
   }
 
   if (error) {
+    logout();
     return (
       <ThemedView style={styles.errorContainer}>
         <ThemedText style={styles.errorText}>
