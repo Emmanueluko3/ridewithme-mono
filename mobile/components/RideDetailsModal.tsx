@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, StyleSheet, View } from "react-native";
+import { Modal, StyleSheet, Text, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { runOnJS } from "react-native-reanimated";
 import { ThemedView } from "./views/ThemedView";
@@ -64,7 +64,7 @@ const RideDetailsModal: React.FC<RideDetailsModalProps> = ({
               Dropoff: {ride.dropoff}
             </ThemedText>
             <ThemedText style={styles.modalText}>
-              Car Type: {ride.carType}
+              Car Type: <Text style={styles.carTypeText}>{ride.carType}</Text>
             </ThemedText>
             <ThemedText style={styles.modalText}>Fare: ${ride.fare}</ThemedText>
             <ThemedText style={styles.modalText}>
@@ -99,6 +99,16 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 18,
     marginVertical: 5,
+  },
+  carTypeText: {
+    textAlign: "center",
+    borderColor: "#007AFF",
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: "#007AFF22",
+    color: "#007AFF",
+    paddingVertical: 1,
+    paddingHorizontal: 8,
   },
   closeButton: {
     margin: 20,

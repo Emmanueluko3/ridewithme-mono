@@ -79,7 +79,7 @@ export default function HomeScreen() {
               justifyContent: "center",
               alignItems: "center",
               width: "100%",
-              height: "100%",
+              height: 400,
             }}
           >
             <ActivityIndicator size="large" color={color} />
